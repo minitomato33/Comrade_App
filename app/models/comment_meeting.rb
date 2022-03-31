@@ -1,0 +1,2 @@
+class CommentMeeting < ApplicationRecord
+end

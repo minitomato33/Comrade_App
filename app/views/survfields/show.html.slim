@@ -1,0 +1,99 @@
+= include_gon
+#fh5co-main
+  .fh5co-narrow-content
+    h2.fh5co-heading.animate-box data-animate-effect="fadeInLeft"  #{@survfield.field_name}
+    .row
+    .row-bottom-padded-md.animate-box data-animate-effect="fadeInLeft" 
+      - if @survfield.wented_field_flg
+        = link_to went_survfields_path(id: @survfield.attributes), class:'went_survfield_btn normal-border disabled', method: :delete , disabled: true
+          i.fas.fa-flag = " #{'参加済'}"
+        = link_to went_survfield_path(id: @survfield.place_id), class:'went_survfield_btn normal-border', method: :delete
+          i.fas.fa-backspace = " #{'解除'}"
+      - else
+        = link_to went_survfields_path(@survfield.attributes), class:'went_survfield_btn normal-border', method: :post
+          i.fas.fa-flag = " #{'参加登録'}"
+      .row
+      .row-bottom-padded-md
+      h5.fh5co-heading.animate-box data-animate-effect="fadeInLeft" FIELDMAP 
+      .col-md-7.z-index-0
+        / google map
+        #map.animate-box data-animate-effect="fadeInLeft"
+      .col-md-5
+        h5.fh5co-heading フィールド詳細
+        .row-bottom-padded-md
+          | フィールドURL
+          br
+          -if @survfield.website.nil?
+            | 未登録
+          -else
+            a href="#{@survfield.website}" #{@survfield.website}
+        .row-bottom-padded-md
+          | 電話番号
+          br
+          -if @survfield.formatted_phone_number.nil?
+            | 未登録
+          -else
+            = @survfield.formatted_phone_number
+        .row-bottom-padded-md
+          | フィールド住所
+          br
+          -if @survfield.website.nil?
+            | 未登録
+          -else
+            = @survfield.formatted_address.delete("日本、")
+        .row-bottom-padded-md
+        -if @survfield.rating.present?
+          p googleレビュー#{@survfield.rating}
+      
+  javascript:
+    let map
+    let geocoder
+    let marker;
+    let infoWindow;
+
+    // コントローラーで定義したインスタンス変数を変数に代入
+    const survfield = gon.survfield;
+    
+    function initMap(){
+      geocoder = new google.maps.Geocoder()
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 35.6809591, lng: 139.7673068},
+        zoom: 14
+      });
+      map.setCenter(new google.maps.LatLng(survfield.lat,survfield.lng));
+      marker = new google.maps.Marker(
+      {
+        map: map,
+        position: new google.maps.LatLng(survfield.lat,survfield.lng)
+      });
+      var contentString="<dl id='infowin2'><dt>"+ survfield['field_name'] + "</dt><dd>"+ survfield['formatted_address'] + "<dd></dl>";
+      // infoWindowは吹き出し
+      infoWindow = new google.maps.InfoWindow(
+      {
+        // contentで中身を指定                
+        content: contentString
+      });
+      // markerがクリックされた時、
+      marker.addListener("click", function()
+      {
+        // infoWindowを表示
+        infoWindow.open(map, marker);
+      });
+    }
+    function codeAddress(){
+      // 入力を取得
+      let inputAddress = document.getElementById('address').value;
+             // geocodingしたあとmapを移動
+        geocoder.geocode( { 'address': inputAddress}, function(results, status) {
+          if (status == 'OK') {
+            // map.setCenterで地図が移動
+            map.setCenter(results[0].geometry.location);
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+    }
+  script async="" defer=""  src="https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&callback=initMap"
+  
+ 
+

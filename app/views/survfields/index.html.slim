@@ -1,0 +1,36 @@
+#fh5co-main
+  .fh5co-narrow-content
+    h2.fh5co-heading.animate-box data-animate-effect="fadeInLeft"  search field
+
+    / 入力フォーム・検索ボタン
+    .animate-box data-animate-effect="fadeInLeft" 
+      = form_with url: survfields_index_path, method: 'get', local: true do |f|
+          .form-group
+            .row
+              .col-md-3
+                .areas_select
+                  = f.select :search,Choice.areas.keys, include_blank: "Place name selection", class: 'form-control'
+                  /= f.text_field :search, class: 'form-control', placeholder: '地名を入力してください。'
+              .col-md-2
+                = f.submit '検索', class: 'btn btn-light'
+    .row
+    .row.row-bottom-padded-md.animate-box data-animate-effect="fadeInLeft" 
+      .col-md-7
+        - if (@search.present?) && (!("" == @search))
+          |
+            "#{@search}" のサバイバルゲームフィールドの検索結果です。
+          = link_to '参加済フィールド表示', survfields_index_path, method: :get
+        - elsif (@survfields.present?)
+          |
+            参加登録済フィールド
+    / field情報表示
+    - if @survfields
+      .row
+      - @survfields.each do |survfield|
+        = render partial: 'survfield_list', locals: {survfield: survfield, type: ''}
+
+      .row.row-bottom-padded-md
+        .col.animate-box data-animate-effect="fadeInLeft" = paginate @survfields
+      
+      / ☆ページネーション表示用
+      .row.row-bottom-padded-md

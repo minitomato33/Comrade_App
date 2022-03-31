@@ -1,0 +1,77 @@
+#fh5co-main
+  .fh5co-narrow-content
+    h2.fh5co-heading.animate-box data-animate-effect="fadeInLeft"  #{@regularmeeting.title}
+    .row
+    .row.row-bottom-padded-md.animate-box data-animate-effect="fadeInLeft"
+      .col-md-4
+        h3.fh5co-heading.border-bottom comment
+        .memo #{@regularmeeting.appeal}
+      .col-md-6
+        .row
+          h2.fh5co-heading.border-bottom information
+          .col-md-12
+            .account_detail field：#{@regularmeeting.meeting_field_name}
+          .col-md-12
+            .account_detail eventday：#{@regularmeeting.participation_day}
+          .col-md-12
+            .account_detail transportation：#{@regularmeeting.transportation}
+          .col-md-12
+            .account_detail playstyle：#{@regularmeeting.playstyle}
+      .col-md-12 
+        -if @disp_delete == 'on'
+            .row.row-bottom-padded-md
+            .row.row-bottom-padded-md
+              p こちらの内容を削除します。よろしいですか。
+              .col-md-3
+                = link_to "Yes", regularmeeting_path(id: @regularmeeting), class:'btn delete-btn-border', method: :delete
+              .col-md-3
+                = link_to regularmeetings_path(disp_plan: 'on'), class:'btn back-btn-border', method: :get
+                  i.fas.fa-undo
+        -else
+          -if @regularmeeting.planned_regularmeeting_flg
+            .row 
+              .col-md-1
+                = link_to "編集", edit_regularmeeting_path(id: @regularmeeting), method: :get, class:'btn btn-warning'
+              .col-md-1
+                = link_to "削除", regularmeeting_path(id: @regularmeeting), data: { confirm: "こちらの内容を削除します。よろしいですか。" }, method: :delete, class: 'btn btn-danger'  
+            .row.row-bottom-padded-md
+            .row.row-bottom-padded-md
+            - if @regularmeeting.request_flg
+              p
+                |
+                  申請者：
+              = render partial: 'show_regularmeeting_user_list', locals: {users: @users, regularmeeting: @regularmeeting, disp_user_meeting_status: 1}
+          -else 
+            .row.row-bottom-padded-md
+            .row.row-bottom-padded-md
+              -if @regularmeeting.regularmeeting_status == 0
+                .col-md-2
+                  = link_to follow_regularmeetings_path(id: @regularmeeting), method: :post, class: 'btn btn-success'
+                    |
+                      参加申請
+              -elsif @regularmeeting.regularmeeting_status == 1
+                p
+                  | 
+                    状態：参加申請中
+                .col-md-2
+                  = link_to follow_regularmeeting_path(id: @regularmeeting,user_id: current_user.id), method: :delete, class: 'btn btn-danger'
+                    | 申請解除
+              -elsif @regularmeeting.regularmeeting_status == 2
+                p 
+                  |
+                    状態：参加登録済
+                .col-md-2
+                  = link_to follow_regularmeeting_path(id: @regularmeeting,user_id: current_user.id), method: :delete, class: 'btn btn-danger'
+                    |登録解除                  
+          p
+            |
+              このイベントでのComrade： 
+          = render partial: 'show_regularmeeting_user_list', locals: {users: @users, regularmeeting: @regularmeeting, disp_user_meeting_status: 2}
+            
+                    
+
+      
+
+      
+      
+

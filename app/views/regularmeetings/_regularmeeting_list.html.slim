@@ -1,0 +1,30 @@
+ .row.row-bottom-padded-md
+ .row.row-bottom-padded-md
+  - if regularmeetings.present?
+    - regularmeetings.each do |regularmeeting|
+      .row-bottom-padded-md.animate-box data-animate-effect="fadeInLeft"
+        .col-md-4 
+          .row
+            .col-md-12.pb-3
+              .regularmeeting_title
+                a href="#{regularmeeting_path(id: regularmeeting.id)}"  #{regularmeeting.title}
+                //= link_to "#{regularmeeting.title}",regularmeeting_path(id: regularmeeting.id), method: :get
+            .col-md-12 
+              //a href="#{survfields_show_path(place_id: regularmeeting.place_id)}"  #{regularmeeting.meeting_field_name} ,class="btn fied-btn-border"
+              = link_to survfields_show_path(place_id: regularmeeting.place_id), method: :get ,class: "btn fied-btn-border"
+                i.fas.fa-flag
+                  ="#{regularmeeting.meeting_field_name}"
+        .col-md-4
+          -if regularmeeting.planned_regularmeeting_flg
+            //申請があった場合の処理を記載
+            -if regularmeeting.request_flg
+              i.fas.fa-exclamation 　参加申請があります  
+            -if regularmeeting.expired_flg
+              = link_to "delete", regularmeeting_path(id: regularmeeting.id, disp_delete: 'on'), method: :get, class: "btn delete-btn-border"
+              i.fas.fa-exclamation-triangle 　期限切れの定例会です。
+          -else
+            -if 1 == regularmeeting.regularmeeting_status
+              p 参加申請中
+            - elsif 2 == regularmeeting.regularmeeting_status
+              p 参加登録済
+          

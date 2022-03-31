@@ -1,0 +1,2 @@
+module RegularmeetingsHelper
+end

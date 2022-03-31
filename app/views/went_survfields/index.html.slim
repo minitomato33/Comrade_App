@@ -1,0 +1,113 @@
+= include_gon
+#fh5co-main
+  .fh5co-narrow-content
+    h2.fh5co-heading.animate-box data-animate-effect="fadeInLeft"  WENT FIELD
+    / 入力フォーム・検索ボタン
+    .animate-box data-animate-effect="fadeInLeft" 
+      .row
+        .col-md-5
+          input#address type="textbox" value='' placeholder='地名から検索' class='form-control'
+        .col-md-2
+          input onclick="codeAddress()" type="button" value="検索" class='btn btn-light'
+      .row
+      .row.row-bottom-padded-md.animate-box data-animate-effect="fadeInLeft" 
+        .col-md-7
+    .row.row-bottom-padded-md.animate-box data-animate-effect="fadeInLeft" 
+      h5.fh5co-heading.animate-box data-animate-effect="fadeInLeft" FIELDMAP 
+      .col-md-7.z-index-0
+        / google map
+        #map.animate-box data-animate-effect="fadeInLeft"
+      .col-md-5
+        -if @user.is_current_user_following == -1
+          h5.fh5co-heading.animate-box data-animate-effect="fadeInLeft" 
+            |  あなたの参加フィールド 
+        -else
+          h5.fh5co-heading.animate-box data-animate-effect="fadeInLeft" 
+            |  #{@user.account_name}さんの参加フィールド 
+        - @survfields.each do |survfield|
+          .row.row-bottom-padded-md
+            //map移動とフィールド表示分ける
+            = link_to survfields_show_path(place_id: survfield.place_id), method: :get, class: "btn fied-btn-border"
+              i.fas.fa-flag
+                ="#{survfield.field_name}" 
+            = link_to went_survfields_path(is_center_field: survfield.place_id,field_user_id: @user.id), method: :get, class: "btn map-btn-radius-solid" 
+              i.fas.fa-map-marker-alt
+                | map移動
+            
+        br
+  javascript:
+    let map
+    let geocoder
+    let marker = [];
+    let infoWindow = [];
+
+    // コントローラーで定義したインスタンス変数を変数に代入
+    const survfields = gon.survfields;
+    const center_survfield = gon.center_survfield;
+
+    function initMap(){
+      geocoder = new google.maps.Geocoder()
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 35.6809591, lng: 139.7673068},
+        zoom: 10    
+      });
+      if (0 < survfields.length)
+      {
+        if (null != center_survfield)
+        {
+          map.setCenter(new google.maps.LatLng(center_survfield.lat,center_survfield.lng));
+        }
+        else
+        {
+          map.setCenter(new google.maps.LatLng(survfields[0].lat,survfields[0].lng));
+        }
+      }
+      for (let i = 0; i < survfields.length; i++)
+      {
+        marker[i] = new google.maps.Marker(
+        {
+          map: map,
+          position: new google.maps.LatLng(survfields[i].lat,survfields[i].lng)
+        });
+
+        var contentString="<dl id='infowin2'><dt>"+ survfields[i]['field_name'] + "</dt><dd>"+ survfields[i]['formatted_address'] + "<dd></dl>";
+
+        // infoWindowは吹き出し
+        infoWindow[i] = new google.maps.InfoWindow(
+        {
+          // contentで中身を指定
+          // 今回は文字にリンクを貼り付けた形で表示
+          // content: restaurants[i]['name']
+          content: contentString
+        });
+        // markerがクリックされた時、
+        marker[i].addListener("click", function()
+        {
+            // infoWindowを表示
+            infoWindow[i].open(map, marker[i]);
+        });
+      }
+    }
+    function codeAddress(){
+      // 入力を取得
+      let inputAddress = document.getElementById('address').value;
+             // geocodingしたあとmapを移動
+        geocoder.geocode( { 'address': inputAddress}, function(results, status) {
+          if (status == 'OK') {
+      　　　　　　　　　　　　// map.setCenterで地図が移動
+            map.setCenter(results[0].geometry.location);
+
+      　　　　// google.maps.MarkerでGoogleMap上の指定位置にマーカが立つ
+            // var marker = new google.maps.Marker({
+            //     map: map,
+            //     position: results[0].geometry.location
+            // });
+          } else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+        });
+    }
+  script async="" defer=""  src="https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&callback=initMap"
+  
+ 
+

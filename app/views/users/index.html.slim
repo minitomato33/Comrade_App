@@ -1,0 +1,29 @@
+#fh5co-main
+  .fh5co-narrow-content
+    h2.fh5co-heading.animate-box data-animate-effect="fadeInLeft"  Comrade FIND
+    .animate-box data-animate-effect="fadeInLeft"
+      / ユーザ検索フォーム・検索ボタン
+      = form_with url: users_path, method: 'get', local: true do |f|
+        .form-group
+          .row
+            .col-lg-5
+              = f.text_field :search, class: 'form-control', placeholder: '例: tanaka'
+            .col-lg-2
+              = f.submit '検索', class: 'btn btn-light'
+      .row-bottom-padded-md
+        .col-md-2
+          - if "on" == @disp_similar
+            / went_survfield_list表示ボタンを選択表示
+            = link_to users_path(disp_similar: "on"), class: 'btn similar-on-btn-gradient-3d-simple', method: :get 
+              | justlike
+              br pick up
+          - else
+            / went_survfield_list表示ボタンを通常表示
+            = link_to users_path(disp_similar: "on"), class: 'btn similar-btn-gradient-3d-simple', method: :get
+              | justlike
+              br pick up
+          //= link_to users_path(disp_similar: "on"), class: 'btn btn-gradient-3d-simple', method: :get
+            p
+              | justlike
+              br pick up
+    = render partial: 'show_follow_user_list', locals: {follows: @users,disp_similar: @disp_similar}

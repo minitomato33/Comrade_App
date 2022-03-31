@@ -1,0 +1,2 @@
+module PagetopsHelper
+end

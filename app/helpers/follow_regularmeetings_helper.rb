@@ -1,0 +1,2 @@
+module FollowRegularmeetingsHelper
+end

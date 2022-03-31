@@ -1,0 +1,106 @@
+#fh5co-main
+  #fh5co-hero.js-fullheight
+    .flexslider.js-fullheight
+      ul.slides
+        li style=("background-image: url(/assets/ui_templates/img_bg_3.jpg);") 
+          .overlay
+          .container-fluid
+            .row
+              .col-md-8.col-md-offset-2.text-center.js-fullheight.slider-text
+                .slider-text-inner
+                  h1
+                    | 仲間、足りてる？
+                  h2
+                    | ~Let's play a game with friends~
+
+        li style=("background-image: url(/assets/ui_templates/img_bg_4.jpg);") 
+          .overlay
+          .container-fluid
+            .row
+              .col-md-8.col-md-offset-2.text-center.js-fullheight.slider-text
+                .slider-text-inner
+                  h1
+                    | Comrade
+                    br
+                  h2
+                    | コムリド
+                    br
+                  h2
+                    | あなたにぴったりの戦友(トモ)を提供します。
+                    br
+    / style=("background-image: url(/assets/indoa_1.png);")
+    .fh5co-narrow-content.animate-box data-animate-effect="fadeInLeft"
+      .back_img
+        .bg  
+          h2.fh5co-heading.border-bottom.animate-box data-animate-effect="fadeInLeft"  自分の趣向や経験から戦友を探す 
+          .row
+            .col-md-12
+              .fh5co-feature.animate-box data-animate-effect="fadeInLeft" 
+                .font-weight-bold.mb-5
+                  | 「仲間と行くサバイバルゲームは嫌いですか？」 
+                .font-weight-nomal
+                  | 昨今徐々に人気となってきているアミューズメント「サバイバルゲーム」
+                  br
+                  | 他のアミューズとことなり、他人、知人、経験者、未経験者入り乱れて参加するゲームスタイルが主流となっています。
+                  br
+                  br
+                  | そのゲーム性上、単独参加をした場合、心細い気持ちになるものです。
+                  br
+                  | その場で友達を作るのもいいですが、少しハードルが高いですよね。
+                  br
+                  | そんなとき、あらかじめ参加者と情報を知り合えていたら、仲間になれていたら、なんだか少しサバゲーが楽しみになりませんか？
+                  br
+                  | そんな希望を叶えるためのサイト
+                  | それが「Comrade」です。
+
+
+    .fh5co-narrow-content
+      h2.fh5co-heading.border-bottom.animate-box data-animate-effect="fadeInLeft"  Services
+      .row
+        .col-md-6
+          .fh5co-feature.animate-box data-animate-effect="fadeInLeft" 
+            .fh5co-icon
+              i.fas.fa-handshake
+              /<i class="fa-solid fa-magnifying-glass"></i>
+            .fh5co-text
+              h3 event
+              p イベント企画や募集中のイベントを検索できます。
+        .col-md-6
+          .fh5co-feature.animate-box data-animate-effect="fadeInLeft" 
+            .fh5co-icon
+              i.fas.fa-users
+            .fh5co-text
+              h3 find comrade
+              p Comradeを探して、フォローすることができます。
+        .col-md-6
+          .fh5co-feature.animate-box data-animate-effect="fadeInLeft" 
+            .fh5co-icon
+              i.fas.fa-clipboard
+            .fh5co-text
+              h3 RECORD
+              p あなたの参加フィールド（参加予定フィールド）を登録できます。
+        .col-md-6
+          .fh5co-feature.animate-box data-animate-effect="fadeInLeft" 
+            .fh5co-icon
+              i.fas.fa-map
+            .fh5co-text
+              h3 MAP
+              p 地図上でフィールドの場所を確認することができます。
+
+    .row.row-bottom-padded-md
+    - if current_user.nil?
+      #get-in-touch
+        .fh5co-narrow-content
+          .row
+            .col-md-4.animate-box data-animate-effect="fadeInLeft" 
+              h1.fh5co-heading-colored Let's Receive service
+          .row
+            .col-md-6.col-md-offset-3.col-md-pull-3.animate-box data-animate-effect="fadeInLeft" 
+              p.fh5co-lead 登録は1分程度で終わります。
+              .row
+                .col-md-6  
+                  p
+                    a.topsinupbtn href="#{new_user_registration_path}" 無料会員登録
+                .col-md-6
+                  p
+                    a.topsinupbtn href="#{new_user_session_path}" ログイン

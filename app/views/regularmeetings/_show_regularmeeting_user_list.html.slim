@@ -1,0 +1,65 @@
+  - if users.present?
+    .row.row-bottom-padded-md
+      - users.each do |user|
+        -if user.user_meeting_status == disp_user_meeting_status  
+          .row-bottom-padded-md.animate-box data-animate-effect="fadeInLeft" 
+            .col-md-2  
+              .row 
+                .col-md-12.pb-3
+                  - if user.image.file.nil?
+                        = link_to user_path(id: user.id), disp: 'show_following_list', method: :get
+                          img src="/assets/no_image.jpeg"  alt="no image" class="account_img"
+                  - else 
+                      = link_to user_path(id: user.id), disp: 'show_following_list', method: :get
+                        = image_tag(user.image.to_s, size: 75, class: "account_img")
+              .row
+                .col-md-12
+                    h4
+                       = link_to "#{user.account_name}",user_path(id: user.id), disp: 'show_following_list', class: 'account_name', method: :get
+              .row 
+                .col-md-12 
+                  .account_id ="@#{user.account_id}"
+              .row 
+                -if 2 == disp_user_meeting_status
+                  .col-md-12.pr-0.pb-5 
+                    - if -1 == user.is_current_user_following
+                      /nop
+                    - elsif 0 == user.is_current_user_following
+                      = link_to follows_path(id: user), class:'follow_btn', method: :post
+                        i.fas.fa-user-check
+                          フォローする
+                    - elsif 1 == user.is_current_user_following
+                      - if 'guest' == current_user.account_id
+                        = link_to follow_path(id: user), class:'follow_btn following disabled', method: :delete , disabled: true
+                          i.fas.fa-user-check 
+                            フォロー中
+                      -else
+                        = link_to follow_path(id: user), class:'follow_btn following', method: :delete
+                          i.fas.fa-user-check 
+                            フォロー中
+                    - elsif 2 == user.is_current_user_following
+                      = link_to follow_path(id: user), class:'follow_btn following', method: :delete
+                        i.fas.fa-user-plus
+                          フォローリクエスト中
+                    - elsif 3 == user.is_current_user_following 
+                      = link_to follow_path(id: user), class:'follow_btn', method: :patch
+                        i.fas.fa-user-plus
+                          リクエスト承認
+                    - else
+                      /nop
+                              .col-md-12.pr-0.pb-5
+            .row.row-bottom-padded-md 
+            .row.row-bottom-padded-md  
+              .col-md-2 
+                -if user.id == current_user.id
+                  /nop
+                -elsif 1 == disp_user_meeting_status                 
+                  = link_to follow_regularmeeting_path(id: regularmeeting,user_id: user.id), method: :patch ,class: 'btn regularmeeting_info_basic_btn' 
+                    |承認
+                -elsif 2 == disp_user_meeting_status && regularmeeting.user_id == current_user.id
+                  = link_to follow_regularmeeting_path(id: regularmeeting,user_id: user.id), method: :delete ,class: 'btn regularmeeting_info_basic_btn' 
+                    |解除
+
+
+
+

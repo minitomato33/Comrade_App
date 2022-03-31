@@ -1,0 +1,23 @@
+ -if survfields
+  .row.row-bottom-padded-md
+  - survfields.each do |survfield|
+    .col-md-3.col-sm-6.col-padding.animate-box data-animate-effect="fadeInLeft" 
+      .blog-entry
+        / フィールド名
+        = link_to survfields_show_path(place_id: survfield.place_id) ,class:'field-circle-flat',class:'field-circle-flat'
+          .field-circle-flat-inner
+            = "#{survfield.field_name}"
+        /h6.card_title
+          a href="#{survfields_show_path(place_id: survfield.place_id)}"  #{survfield.field_name}
+        / 住所
+        / p.card
+        /   =survfield.formatted_address.delete("日本、")
+        - if survfield.wented_field_flg
+          = link_to went_survfield_path(id: survfield.place_id), class:'went_survfield_btn normal-border', method: :delete
+            i.fas.fa-backspace = " #{'登録解除'}"
+
+
+
+            
+ 
+

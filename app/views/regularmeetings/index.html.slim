@@ -1,0 +1,33 @@
+#fh5co-main
+  .fh5co-narrow-content
+    -if @disp_plan == 'on'
+      h2.fh5co-heading.animate-box data-animate-effect="fadeInLeft"  plan
+    -else
+      h2.fh5co-heading.animate-box data-animate-effect="fadeInLeft"  Participation
+    .row
+    .row.row-bottom-padded-md.animate-box data-animate-effect="fadeInLeft" 
+      .col-md-12
+        -if @disp_plan == 'on'
+          .row
+            .col-md-1
+              = link_to new_regularmeeting_path, method: :get ,class: 'btn new-btn-border'
+                p
+                  | new
+            = render partial: 'regularmeeting_list', locals: {regularmeetings: @regularmeetings}
+        -else 
+          .row
+          .row.row-bottom-padded-md
+          / ユーザ検索フォーム・検索ボタン
+          = form_with url: regularmeetings_path, method: 'get', local: true do |f|
+            .form-group
+              .row
+                .col-lg-5
+                  = f.text_field :search, class: 'form-control', placeholder: 'フィールド名を入力してください'
+                .col-lg-2
+                  = f.submit '検索', class: 'btn btn-light'
+          = render partial: 'regularmeeting_list', locals: {regularmeetings: @regularmeetings}
+      .row.row-bottom-padded-md
+        .col.animate-box data-animate-effect="fadeInLeft" = paginate @regularmeetings
+      
+      / ☆ページネーション表示用
+      .row.row-bottom-padded-md

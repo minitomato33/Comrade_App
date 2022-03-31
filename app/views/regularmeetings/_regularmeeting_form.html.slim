@@ -1,0 +1,50 @@
+= form_with model: regularmeeting, local: true do |f|
+    .form-group
+      .row-bottom-padded-md.my-5
+        .col-md-12.pb-5
+          .field
+            = f.label "タイトル"
+            br
+            = f.text_field :title, class: "form-control"
+      .row-bottom-padded-md.my-5
+        .col-md-12.pb-5
+          .field
+            = f.label "参加フィールド(参加フィールドに登録したフィールドが表示されます)"
+            br
+            /  place_idを選択式で表示
+            = f.collection_select :place_id, wentsurvfields, :place_id, :field_name , class:"form-control"
+      .row-bottom-padded-md.my-5
+        .col-md-12.pb-5
+          .field
+            = f.label "参加日"
+            br
+            /  日付をカレンダー表示
+            = f.date_field :participation_day , class:"date_field_brack"
+      .row-bottom-padded-md.my-5
+        .col-md-12.pb-5
+          .field
+            = f.label " 移動手段"
+            br
+            /  transportationを選択式で表示
+            = f.select :transportation, ["自家用車","電車→フィールド送迎車利用","電車→バス","乗合希望"], include_blank: "-", class:"form-control"
+      .row-bottom-padded-md.my-5
+        .col-md-12.pb-5
+          .field
+            = f.label "プレイスタイル"
+            br
+            /  playstyleを選択式で表示
+            = f.select :playstyle, ["カジュアルプレイ","チームプレイ","タクティカルトレーニング","撮影","コスプレ"], include_blank: "-", class:"form-control"
+      .row-bottom-padded-md.my-5
+        .col-md-12.pb-5
+          .field
+            = f.label "企画詳細"
+            br
+            = f.text_area :appeal, class: "form-control" ,rows: "3" ,id: "exampleFormControlTextarea1"
+      .row-bottom-padded-md.my-5
+        .col-md-12.pr-0
+          .col-md-10.pl-0
+          .col-md-2.pl-0
+            -if controller.action_name == 'new'
+              = f.submit "登録", class: 'btn btn-primary'
+            -else
+              = f.submit "編集", class: 'btn btn-warning'

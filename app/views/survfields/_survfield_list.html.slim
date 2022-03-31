@@ -1,0 +1,16 @@
+.col-md-3.col-sm-6.col-padding.animate-box data-animate-effect="fadeInLeft" 
+  .blog-entry
+    .desc
+      / フィールド名
+      = link_to survfields_show_path(place_id: survfield.place_id) ,class:'field-circle-flat',class:'field-circle-flat'
+        .field-circle-flat-inner
+          = "#{survfield.field_name}"
+      / h6.card_title
+      /   a href="#{survfields_show_path(place_id: survfield.place_id)}"  #{survfield.field_name}
+      br
+      - if survfield.wented_field_flg
+        = link_to went_survfield_path(id: survfield.place_id), class:'went_survfield_btn normal-border', method: :delete
+          i.fas.fa-backspace = " #{'登録解除'}"
+      - else
+        = link_to went_survfields_path(place_id: survfield.place_id), class:'went_survfield_btn normal-border', method: :post
+          i.fas.fa-flag = " #{'参加登録'}"

@@ -1,0 +1,149 @@
+#fh5co-main
+  .fh5co-narrow-content
+  .animate-box data-animate-effect="fadeInLeft"
+    .row-bottom-padded-md
+      .col-md-2.pb-5
+        .row 
+          .col-md-12.pb-3
+            - if @user.image.file.nil?
+              = link_to user_path(id: @user.id), method: :get
+                img src="/assets/no_image.jpeg"  alt="no image" class="account_img"
+            - else 
+              = link_to user_path(id: @user.id)
+                = image_tag(@user.image.to_s, size: 75, class: "account_img")
+        .row
+          .col-md-12
+            .account_name = @user.account_name
+          .col-md-12
+              .account_id ="@#{@user.account_id}"
+          .col-md-12
+            - if @user.account_id == current_user.account_id
+              = link_to '編集',edit_user_registration_path, class:'user_setting_btn', method: :get
+            - else 
+              - if -1 == @user.is_current_user_following
+                /nop
+              - elsif 0 == @user.is_current_user_following
+                = link_to follows_path(id: @user), class:'follow_btn', method: :post
+                  i.fas.fa-user-check
+                    フォローする
+              - elsif 1 == @user.is_current_user_following
+                - if 'guest' == current_user.account_id
+                  = link_to follow_path(id: @user), class:'follow_btn following disabled', method: :delete , disabled: true
+                    i.fas.fa-user-check 
+                      フォロー中
+                -else
+                  = link_to follow_path(id: @user), class:'follow_btn following', method: :delete
+                    i.fas.fa-user-check 
+                      フォロー中
+              - elsif 2 == @user.is_current_user_following
+                = link_to follow_path(id: @user), class:'follow_btn following', method: :delete
+                  i.fas.fa-user-plus
+                    フォローリクエスト中
+              - elsif 3 == @user.is_current_user_following 
+                = link_to follow_path(id: @user), class:'follow_btn', method: :patch
+                  i.fas.fa-user-plus
+                    リクエスト承認
+              - else
+                /nop
+      .col-md-4.pb5
+        h3.fh5co-heading.border-bottom comment
+        .col-md-12
+          .memo #{@user.memo}
+      .col-md-4.pb5
+        h3.fh5co-heading.border-bottom career
+        .col-md-12
+          .account_detail 経験年数：#{@user.experience}
+        .col-md-12
+          .account_detail 参加頻度：#{@user.participation}
+        .col-md-12
+          .account_detail プレイスタイル：#{@user.playstyle}
+        .col-md-12
+          .account_detail 休日：#{@user.holiday}
+    .row-bottom-padded-md
+      .col-md-12.pb-5
+        - if "went_survfield_list" == @disp || nil == @disp
+          / went_survfield_list表示ボタンを選択表示
+          = link_to user_path(@user,disp: 'went_survfield_list'), class: 'info_basic_btn selected', method: :get 
+            | 参加フィールド 
+            br
+            i.fas.fa-flag
+              = "#{@went_survfields.count}"
+        - else
+          / went_survfield_list表示ボタンを通常表示
+          = link_to user_path(@user, disp: 'went_survfield_list'), class: 'info_basic_btn', method: :get
+            | 参加フィールド 
+            br
+            i.fas.fa-flag
+              = "#{@went_survfields.count}"
+
+        = link_to went_survfields_path(field_user_id: @user.id), class: 'info_basic_btn', method: :get 
+          | MAP
+          br
+          i.fas.fa-map-marked-alt
+
+        - if "show_following_list" == @disp
+          / following表示ボタンを選択表示
+          = link_to user_path(@user, disp: 'show_following_list'), class: 'info_basic_btn selected', method: :get
+            | Comrade
+            br
+              i.fas.fa-user-check 
+              = "#{@user.followings_count}"
+        - else
+          / following表示ボタンを通常表示
+          = link_to user_path(@user, disp: 'show_following_list'), class: 'info_basic_btn', method: :get
+            | Comrade
+            br
+              i.fas.fa-user-check 
+              = "#{@user.followings_count}"
+        - if "regularmeetings" == @disp
+          / went_survfield_list表示ボタンを選択表示
+          = link_to user_path(@user,disp: 'regularmeetings'), class: 'info_basic_btn selected', method: :get 
+            | 企画定例会 
+            br
+              i.fas.fa-hand-paper
+                = "#{@regularmeetings.count}"
+        - else
+          = link_to user_path(@user, disp: 'regularmeetings'), class: 'info_basic_btn', method: :get
+            | 企画定例会 
+            br
+              i.fas.fa-hand-paper
+                = "#{@regularmeetings.count}"
+        - if "go_regularmeetings" == @disp
+          = link_to user_path(@user,disp: 'go_regularmeetings'), class: 'info_basic_btn selected', method: :get 
+            | 参加定例会 
+            br
+              i.fas.fa-car
+                = "#{@go_regularmeetings.count}"
+        - else
+          / went_survfield_list表示ボタンを通常表示
+          = link_to user_path(@user, disp: 'go_regularmeetings'), class: 'info_basic_btn', method: :get
+            | 参加定例会 
+            br
+              i.fas.fa-car
+                = "#{@go_regularmeetings.count}"
+    .row-bottom-padded-md
+      .col-md-12.pl-1
+        -if "went_survfield_list" == @disp || nil == @disp
+          = render partial: 'show_went_survfield_list', locals: {survfields: @went_survfields, disp: @disp}
+          - paginate_arg = @went_survfields
+        - elsif  "show_following_list" == @disp
+          / followingリストを表示
+          = render partial: 'show_follow_user_list', locals: {follows: @followings, disp_similar: @disp_similar}
+          - paginate_arg = @followings
+        -elsif "regularmeetings" == @disp
+          = render partial: 'show_regularmeeting_list', locals: {regularmeetings: @regularmeetings, disp: @disp}
+          - paginate_arg = @regularmeetings
+        -elsif "go_regularmeetings" == @disp
+          = render partial: 'show_regularmeeting_list', locals: {regularmeetings: @go_regularmeetings, disp: @disp}
+          - paginate_arg = @go_regularmeetings
+        - else
+          / nop
+
+    .row.row-bottom-padded-md
+    - if @disp ||= false 
+      .col.animate-box data-animate-effect="fadeInLeft" = paginate paginate_arg
+    / ☆ページネーション表示用
+    .row.row-bottom-padded-md
+
+
+
