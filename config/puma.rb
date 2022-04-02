@@ -4,7 +4,7 @@ threads min_threads_count, max_threads_count
 
 
 #port ENV.fetch("PORT") { 3000 }
-bind "unix:///var/www/test_app/tmp/sockets/puma.sock"
+bind "unix:///var/www/comrade_app/tmp/sockets/puma.sock"
 
 environment ENV.fetch("RAILS_ENV") { "development" }
 
