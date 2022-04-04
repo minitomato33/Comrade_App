@@ -82,5 +82,8 @@ test:
 production:
   <<: *default
   database: comrade_app_production
-  username: comrade_app
-  password: <%= ENV['comrade_app_DATABASE_PASSWORD'] %>
+  username: <%= Rails.application.credentials.db[:user_name] %>
+  password: <%= Rails.application.credentials.db[:password] %>
+  host: <%= Rails.application.credentials.db[:endpoint] %>
+  pool: 20
+  timeout: 1000
