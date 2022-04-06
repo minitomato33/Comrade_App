@@ -27,7 +27,8 @@ body {
   line-height: 1.6;
   //color: rgba(0, 0, 0, 0);
   background: rgb(0, 0, 5);
-  background-image: url(/assets/back_3.jpeg);
+  //background-image: url(/assets/back_3.jpeg);
+  background-image: url("back_3.jpeg");
   background-repeat: repeat;
   background-position:0% 0%;
 }
@@ -619,7 +620,8 @@ section {
 }
 
 .back_img {
-  background-image: url(/assets/indoa_1.png);
+  //background-image: url(/assets/indoa_1.png);
+  background-image: image-url("indoa_1.png");
   background-repeat: no-repeat;
   background-size:  cover;  
   background-position:50% 50%;
