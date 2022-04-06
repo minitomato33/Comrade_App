@@ -8,7 +8,7 @@
                 .col-md-12.pb-3
                   - if user.image.file.nil?
                         = link_to user_path(id: user.id), disp: 'show_following_list', method: :get
-                          img src="/assets/no_image.jpeg"  alt="no image" class="account_img"
+                          = image_tag("no_image.jpeg", alt: "no image", class: "account_img")
                   - else 
                       = link_to user_path(id: user.id), disp: 'show_following_list', method: :get
                         = image_tag(user.image.to_s, size: 75, class: "account_img")
