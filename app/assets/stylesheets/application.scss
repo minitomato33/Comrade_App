@@ -620,11 +620,21 @@ section {
 }
 
 .back_img {
-  //background-image: url(/assets/indoa_1.png);
   background-image: image-url("indoa_1.png");
   background-repeat: no-repeat;
   background-size:  cover;  
   background-position:50% 50%;
+}
+.img_bg_3 {
+  background-image: image-url("ui_templates/img_bg_3.jpg");
+  background-repeat: no-repeat;
+  background-size:  cover;  
+}
+
+.img_bg_4 {
+  background-image: image-url("ui_templates/img_bg_4.jpg");
+  background-repeat: no-repeat;
+  background-size:  cover;  
 }
 .bg{
   background-color: rgba(255, 255, 255, 0.2);
